@@ -4,6 +4,7 @@ set -e
 ANDROID_JAR=/usr/lib/android-sdk/platforms/android-23/android.jar
 BUILD_TOOLS=/usr/lib/android-sdk/build-tools/29.0.3
 MANIFEST=app/src/main/AndroidManifest.xml
+RES=app/src/main/res
 OUT=out
 APK_UNSIGNED=$OUT/app-unsigned.apk
 APK_ALIGNED=$OUT/app-aligned.apk
@@ -56,10 +57,11 @@ SMALI
 echo "[1/5] Assembling Smali → classes.dex"
 smali assemble $OUT/smali -o $OUT/classes.dex
 
-# ── 2. Package manifest + resources into APK ─────────────────────────────────
+# ── 2. Package manifest + resources into APK (includes resources.arsc) ───────
 echo "[2/5] Packaging resources with aapt"
 $BUILD_TOOLS/aapt package -f \
     -M $MANIFEST \
+    -S $RES \
     -I $ANDROID_JAR \
     -F $APK_UNSIGNED
 
